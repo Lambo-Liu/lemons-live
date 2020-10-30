@@ -11,7 +11,20 @@ function validatePassword(password) {
 }
 
 module.exports.renderRegister = (req, res) => {
-  res.render("users/register", {user: req.user});
+  if (req.user != undefined) {
+    if (req.user.isTeacher === true) {
+      req.flash("success", "Welcome back to Lemons Live!");
+      res.redirect("/dashboard");
+    }
+    else {
+      req.flash("success", "Welcome back to Lemons Live!");
+      res.redirect("/play");
+    }
+  }
+
+  else {
+    res.render("users/register", {user: req.user});
+  }
 }
 
 module.exports.register = async (req, res, next) => {
@@ -63,10 +76,23 @@ module.exports.register = async (req, res, next) => {
 }
 
 module.exports.renderLogin = (req, res) => {
-  res.render("users/login", {user: req.user});
+  if (req.user != undefined) {
+    if (req.user.isTeacher === true) {
+      req.flash("success", "Welcome back to Lemons Live!");
+      res.redirect("/dashboard");
+    }
+    else {
+      req.flash("success", "Welcome back to Lemons Live!");
+      res.redirect("/play");
+    }
+  }
+
+  else {
+    res.render("users/login", {user: req.user});
+  }
 }
 
-module.exports.login = async (req, res) => {
+module.exports.login = (req, res) => {
   if (req.user.isTeacher === true) {
     req.flash("success", "Welcome back to Lemons Live!");
     res.redirect("/dashboard");

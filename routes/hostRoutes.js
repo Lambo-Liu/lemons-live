@@ -83,6 +83,29 @@ function parseQuestions(questions, callback) {
   }
 }
 
+function deleteQuestions(questions, callback) {
+  if (questions.length === 0) {
+    callback();
+  }
+
+  else {
+    let i = 0;
+
+    questions.forEach(function(question, i) {
+      Question.deleteOne({_id: question}, function(err, deletedQuestion) {
+        if (err) {
+          returnErr(err);
+        } else {
+          i++;
+          if (questions.length === i) {
+            callback();
+          }
+        }
+      });
+    });
+  }
+}
+
 router.get("/", function(req, res) {
   Class.find({}, function(err, classes) {
     if (err) {
@@ -343,18 +366,20 @@ router.delete("/:id/:gameid", function(req, res) {
         if (err) {
           returnErr(err);
         } else {
-          Game.deleteOne({_id: req.params.gameid}, function(err, deletedGame) {
+          Game.findOne({_id: req.params.gameid}, function(err, foundGame) {
             if (err) {
               returnErr(err);
             } else {
-          // User.updateMany({gamesLog: req.params.gameid}, {$pull: {gamesLog.games: req.params.gameid}} function(err, updatedUsers) {
-          //   if (err) {
-          //     returnErr(err);
-          //   } else {
-              req.flash("success", "Successfully deleted game " + deletedGame.title);
-              res.redirect("/dashboard/" + req.params.id);
-          //   }
-          // });
+              deleteQuestions(foundGame.questions, function(err) {
+                Game.deleteOne({_id: req.params.gameid}, function(err, deletedGame) {
+                  if (err) {
+                    returnErr(err);
+                  } else {
+                    req.flash("success", "Successfully deleted game " + deletedGame.title);
+                    res.redirect("/dashboard/" + req.params.id);
+                  }
+                });
+              });
             }
           });
         }

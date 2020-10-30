@@ -2,7 +2,7 @@
   <div @click.away="open = false" class="fixed lg:h-screen flex flex-col w-full lg:w-48 text-gray-700 bg-dark-dark flex-shrink-0" x-data="{ open: false }">
     <div class="flex-shrink-0 px-8 py-4 flex flex-row items-center justify-between">
       <a href="#" class="mr-2 mt-2 text-lg font-semibold tracking-widest text-white uppercase rounded-lg focus:outline-none focus:shadow-outline">
-        <img class="w-48 h-full" style="max-height: 60px;" src="/img/logo-live.png" alt="Lemons Live logo">
+        <img class="lg:w-48 w-auto h-full" style="max-height: 60px;" src="/img/logo-live.png" alt="Lemons Live logo">
       </a>
       <button class="rounded-lg lg:hidden rounded-lg focus:outline-none focus:shadow-outline" @click="open = !open">
         <svg fill="currentColor" viewBox="0 0 20 20" class="w-6 h-6">
@@ -41,7 +41,7 @@
       </div>
     </nav>
   </div>
-  <main class="lg:pt-8 lg:ml-48 pt-32 w-full px-8 bg-dark">
+  <main class="lg:pt-8 lg:ml-48 pt-32 w-full px-8 bg-dark text-dark">
     <%- body %>
   </main>
 

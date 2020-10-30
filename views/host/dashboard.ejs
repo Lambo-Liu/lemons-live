@@ -1,0 +1,11 @@
+<% layout('./boilerplate') -%>
+
+<a href="/dashboard/new">Create Class</a><br><br>
+
+<% classes.forEach(function(eachClass) { %>
+    <p>Class Title: <%= eachClass.title %></p>
+    <a href="/dashboard/<%= eachClass._id %>">View Class</a>
+    <form action="/dashboard/<%= eachClass._id %>?_method=DELETE" method="POST">
+        <button type="submit">Delete</button>
+    </form>
+<% }); %>

@@ -1,0 +1,49 @@
+<div class="fixed flex justify-center w-full p-2 top-0 mt-2 pointer-events-none transition transition-opacity duration-500 ease-in-out" id="alert" style="z-index: 1;">
+  <% if(error && error.length > 0) { %>
+    <div class="pointer-events-auto bg-red-100 border-t-4 border-red-500 rounded-b text-red-900 px-4 py-3 shadow-md md:w-6/12 w-full shadow" role="alert">
+      <div class="flex">
+        <div class="flex items-center mr-5 ml-1">
+          <i class="fa fa-lg fa-exclamation-circle"></i>
+        </div>
+        <div>
+          <p class="font-bold">Uh Oh!</p>
+          <p class="text-sm"><%= error %></p>
+        </div>
+        <button onClick="closeAlert()" type="button" class="ml-auto mr-2" aria-label="Close">
+          <i class="fa fa-times"></i>
+        </button>
+      </div>
+    </div>
+  <% } %>
+
+  <% if(success && success.length > 0) { %>
+    <div class="pointer-events-auto bg-green-100 border-t-4 border-green-500 rounded-b text-green-900 px-4 py-3 shadow-md md:w-6/12 w-full shadow" role="alert">
+      <div class="flex">
+        <div class="flex items-center mr-5 ml-1">
+          <i class="fa fa-lg fa-check-circle"></i>
+        </div>
+        <div>
+          <p class="font-bold">Success!</p>
+          <p class="text-sm"><%= success %></p>
+        </div>
+        <button onClick="closeAlert()" class="ml-auto mr-2" aria-label="Close">
+          <i class="fa fa-times"></i>
+        </button>
+      </div>
+    </div>
+  <% } %>
+
+  <script type="text/javascript">
+    function closeAlert() {
+      let alert = document.getElementById("alert");
+      alert.style.opacity = 0;
+      setTimeout(function() {
+        alert.remove();
+      }, 500);
+    }
+
+    setTimeout(function() {
+      closeAlert();
+    }, 5000);
+  </script>
+</div>

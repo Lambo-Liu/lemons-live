@@ -1,0 +1,8 @@
+<% layout('./boilerplate') -%>
+
+Home of play live
+
+<% classes.forEach(function(eachClass) { %>
+    <p>Class Title: <%= eachClass.title %></p>
+    <a href="play/<%= eachClass.id %>">View Class</a>
+<% }); %>

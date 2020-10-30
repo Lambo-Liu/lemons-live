@@ -1,0 +1,61 @@
+<div class="lg:flex flex-col lg:flex-row lg:min-h-screen w-full">
+  <div @click.away="open = false" class="fixed lg:h-screen flex flex-col w-full lg:w-48 text-gray-700 bg-dark-dark flex-shrink-0" x-data="{ open: false }">
+    <div class="flex-shrink-0 px-8 py-4 flex flex-row items-center justify-between">
+      <a href="#" class="mr-2 mt-2 text-lg font-semibold tracking-widest text-white uppercase rounded-lg focus:outline-none focus:shadow-outline">
+        <img class="w-48 h-full" style="max-height: 60px;" src="/img/logo-live.png" alt="Lemons Live logo">
+      </a>
+      <button class="rounded-lg lg:hidden rounded-lg focus:outline-none focus:shadow-outline" @click="open = !open">
+        <svg fill="currentColor" viewBox="0 0 20 20" class="w-6 h-6">
+          <path x-show="!open" fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM9 15a1 1 0 011-1h6a1 1 0 110 2h-6a1 1 0 01-1-1z" clip-rule="evenodd"></path>
+          <path x-show="open" fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+        </svg>
+      </button>
+    </div>
+    <nav :class="{'block': open, 'hidden': !open}" class="flex-grow lg:block px-4 pb-4 lg:pb-0 lg:overflow-y-auto">
+      <div class="flex flex-col justify-start lg:h-full">
+        <div>
+          <% if (user === undefined) { %>
+            <a id="/login" class="block px-4 py-2 mt-2 text-sm font-semibold text-white bg-dark-light rounded-lg hover:text-white focus:text-white hover:bg-dark-light focus:bg-dark-light focus:outline-none focus:shadow-outline" href="/login"><i class="fa fa-sign-in-alt mr-2"></i>Sign In</a>
+            <a id="/register" class="block px-4 py-2 mt-2 text-sm font-semibold text-white bg-dark-light rounded-lg hover:text-white focus:text-white hover:bg-dark-light focus:bg-dark-light focus:outline-none focus:shadow-outline" href="/register"><i class="fa fa-user-plus mr-2"></i>Register</a>
+          <% } else { %>
+            <div class="flex flex-row align-center text-white px-2 py-2 mt-2 mb-4 text-sm bg-transparent">
+              <img class="lg:w-4/12 lg:h-12 h-16 rounded-full" src="/img/profile.jpeg" alt="User profile picture">
+              <div class="lg:w-1/12"></div>
+              <div class="lg:w-7/12 lg:ml-0 ml-4 text-left flex flex-col justify-center">
+                <% if (user.isTeacher === true) { %>
+                  <p class="text-xs">Teacher</p>
+                <% } else { %>
+                  <p class="text-xs">Student</p>
+                <% } %>
+                <p class="text-sm font-semibold line-cut-1 m-0"><%= user.username %></p>
+              </div>
+            </div>
+            <a id="home" class="block px-4 py-2 mt-2 text-sm font-semibold text-white bg-transparent rounded-lg hover:text-white focus:text-white hover:bg-dark-light focus:bg-dark-light focus:outline-none focus:shadow-outline" href="/"><i class="fa fa-home mr-2"></i>Home</a>
+            <a id="dashboard" class="block px-4 py-2 mt-2 text-sm font-semibold text-white bg-transparent rounded-lg hover:text-white focus:text-white hover:bg-dark-light focus:bg-dark-light focus:outline-none focus:shadow-outline" href="/dashboard"><i class="fa fa-tachometer-alt mr-2"></i>Dashboard</a>
+            <a id="play" class="block px-4 py-2 mt-2 text-sm font-semibold text-white bg-transparent rounded-lg hover:text-white focus:text-white hover:bg-dark-light focus:bg-dark-light focus:outline-none focus:shadow-outline" href="/play"><i class="fa fa-chalkboard mr-2"></i>Play</a>
+          </div>
+          <div class="lg:mt-auto lg:mb-8">
+            <a class="block px-4 py-2 mt-2 text-sm font-semibold text-white bg-transparent rounded-lg hover:text-white focus:text-white hover:bg-dark-light focus:bg-dark-light focus:outline-none focus:shadow-outline" href="/logout"><i class="fa fa-sign-out-alt mr-2"></i>Log Out</a>
+          </div>
+        <% } %>
+      </div>
+    </nav>
+  </div>
+  <main class="lg:pt-8 lg:ml-48 pt-32 w-full px-8 bg-dark">
+    <%- body %>
+  </main>
+
+  <script type="text/javascript">
+    if (window.location.href.search("dashboard") != -1) {
+      document.getElementById("dashboard").classList.add("bg-dark-light");
+    }
+
+    else if (window.location.href.search("play") != -1) {
+      document.getElementById("play").classList.add("bg-dark-light");
+    }
+
+    else {
+      document.getElementById("home").classList.add("bg-dark-light");
+    }
+  </script>
+</div>

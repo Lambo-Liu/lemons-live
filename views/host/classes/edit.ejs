@@ -1,0 +1,9 @@
+<% layout('./boilerplate') -%>
+
+<form action="/dashboard/<%= foundClass._id %>?_method=PUT" method="POST">
+  <div class="form-group">
+    <label for="name">Class Name</label>
+    <input type="text" class="form-control" name="className" id="name" placeholder="Title" required value="<%= foundClass.title %>">
+  </div>
+  <button type="submit">Save Class</button>
+</form>

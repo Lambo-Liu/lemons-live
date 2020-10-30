@@ -1,0 +1,90 @@
+<% layout('./boilerplate') -%>
+
+<form action="/dashboard/<%= foundClass.id %>" method="POST" onsubmit="parseQuestions()">
+  <div class="form-group">
+    <label for="title">Game Name</label>
+    <input type="text" class="form-control" name="title" id="title" placeholder="Title" required>
+  </div>
+  <div class="form-group">
+    <label for="teams">Number of teams</label>
+    <input type="number" class="form-control" name="teams" id="teams" placeholder="Teams" max="4" min="2" required>
+  </div>
+  <div class="form-group">
+    <label for="teams">Max time (seconds)</label>
+    <input type="number" class="form-control" name="timer" id="timer" placeholder="Max time (seconds)" max="3600" min="60" required>
+  </div>
+
+  <button type="button" onclick="addQuestion()">Add Question</button>
+  <div id="questions-form">
+
+  </div>
+
+  <input id="hidden" type="hidden" name="questions">
+  <button type="submit">Add Class</button>
+</form>
+
+
+<script type="text/javascript">
+  questionsForm = document.getElementById("questions-form");
+  var questions = new Array();
+
+  class Question {
+    constructor(question, answer, solution, hint) {
+      this.question = question;
+      this.answer = answer;
+      this.solution = solution;
+      this.hint = hint;
+
+      $(questionsForm).append( "<div class='questionForm'> <h5>Question</h5>" +
+      "Question Prompt: <input class='my-1 question'> <br/>" +
+      "Answer: <input class='my-1 answer'> <br/>" +
+      "Solution: <input class='my-1 solution'> <br/>" +
+      "Hint: <input class='my-1 hint'> <br/> </div>");
+    }
+
+    setVariables(question, answer, solution, hint) {
+      this.question = question;
+      this.answer = answer;
+      this.solution = solution;
+      this.hint = hint;
+    }
+  }
+
+  class QuestionSubmit {
+    constructor(question, answer, solution, hint) {
+      this.question = question;
+      this.answer = answer;
+      this.solution = solution;
+      this.hint = hint;
+    }
+  }
+
+  function addQuestion() {
+    let question = new Question();
+    questions.push(question);
+    console.log(questions);
+
+    return;
+  }
+
+  function parseQuestions() {
+    questions = document.querySelectorAll(".questionForm");
+    var questionsSubmit = new Array();
+
+    questions.forEach(function(questionDiv) {
+      let question = questionDiv.querySelector(".question").value;
+      let answer = questionDiv.querySelector(".answer").value;
+      let solution = questionDiv.querySelector(".solution").value;
+      let hint = questionDiv.querySelector(".hint").value;
+
+      let questionSubmit = new QuestionSubmit(question, answer, solution, hint);
+
+      questionsSubmit.push(questionSubmit);
+    });
+
+    questionsJSON = JSON.stringify(questionsSubmit);
+    document.getElementById("hidden").value = questionsJSON;
+
+    return true;
+  }
+</script>

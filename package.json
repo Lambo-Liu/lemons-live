@@ -1,0 +1,56 @@
+{
+  "name": "lemons-live",
+  "version": "1.0.0",
+  "description": "Lemons.live project for the 2020 Digital Inclusion Challenge",
+  "main": "app.js",
+  "scripts": {
+    "start": "npm build:css && node ./bin/www",
+    "build:css": "npx tailwindcss build ./public/css/tailwind.css -o ./public/css/style.css",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lambo-Liu/lemons-live.git"
+  },
+  "author": {
+    "name": "Lambert Liu",
+    "email": "lambert0928@outlook.com"
+  },
+  "contributors": [
+    {
+      "name": "Daniel Kaichis",
+      "email": "danielkaichis@gmail.com"
+    },
+    {
+      "name": "Brian Tu",
+      "email": "brianptu2@gmail.com",
+      "url": "https://briantu.tech/"
+    }
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Lambo-Liu/lemons-live/issues"
+  },
+  "homepage": "https://github.com/Lambo-Liu/lemons-live#readme",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.1",
+    "alpinejs": "^2.7.3",
+    "connect-flash": "^0.1.1",
+    "connect-mongo": "^3.2.0",
+    "ejs": "^3.1.5",
+    "ejs-mate": "^3.0.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "jquery": "^3.5.1",
+    "less": "^3.12.2",
+    "method-override": "^3.0.0",
+    "mongoose": "^5.10.10",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^6.0.1",
+    "serve-favicon": "^2.5.0",
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.1",
+    "tailwindcss": "^1.9.6"
+  }
+}

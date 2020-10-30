@@ -12,16 +12,31 @@ exports.initGame = (sio, socket) => {
 	gameSocket.on("hostCreateNewGame", hostCreateNewGame);
 	gameSocket.on("hostRoomFull", hostStartGame);
 
+
 	// Player events
 	gameSocket.on("playerJoinGame", playerJoinGame);
+	gameSocket.on("getNewQuestion", sendQuestion);
 };
 
 function sendQuestion(gameId) {
 	// random question and handling done here
 	// probably pick question and then add it to an array of used questions or something
-	let data = { question: "sample question" };
-	io.sockets.in(gameId).emit("newQuestion", data);
+	var data = getNewQuestion();
+	// io.sockets.in(gameId).emit("newQuestion", data);
+	io.sockets.emit("newQuestion", data);
 }
+
+function getNewQuestion() {
+	let questions = [ "2 + 2", " 4 + 4", "what colour is the sun"];
+	let max = questions.length;
+	let min = 0;
+	let index = Math.floor(Math.random() * (max - min)) + min;
+
+	let data = { question: questions[index] };
+
+	return data;
+}
+
 
 function hostStartGame(gameId) {
 	console.log("game started");

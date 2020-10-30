@@ -94,6 +94,7 @@ jQuery(
 				// Player
 				App.$doc.on("click", "#btnJoinGame", App.Player.onJoinClick);
 				App.$doc.on("click", "#btnPlayerJoin", App.Player.onPlayerJoinClick);
+				App.$doc.on("click", "#submitAnswer", App.Player.getNewQuestion);
 			},
 
 			showInitScreen: function() {
@@ -178,13 +179,11 @@ jQuery(
 
 				newQuestion: function(data) {
 					App.$gameArea.html(App.$hostGame);
-					// Insert the new word into the DOM
-					$("#hostWord").text(data.question);
-
 					// Update the data for the current round
 					// App.Host.currentCorrectAnswer = data.answer;
 					// App.Host.currentRound = data.round;
-				}
+				},
+
 			},
 
 			/********************
@@ -237,11 +236,15 @@ jQuery(
 				newQuestion: function(data) {
 					$("#gameArea").html(App.$hostGame);
 					// Insert the new word into the DOM
-					$("#hostWord").text(data.question);
+					$("#question").text(data.question);
 
 					// Update the data for the current round
 					// App.Host.currentCorrectAnswer = data.answer;
 					// App.Host.currentRound = data.round;
+				},
+
+				getNewQuestion: function(data) {
+					IO.socket.emit("getNewQuestion");
 				}
 			},
 

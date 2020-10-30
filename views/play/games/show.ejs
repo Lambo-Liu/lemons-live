@@ -52,9 +52,11 @@
     <!-- This is the 'Host' screen. It displays the word for each player to match -->
     <script id="host-game-template" type="text/template">
         <div id="wordArea">
-            <div id="hostWord">5</div>
+            <div id="question"></div>
+            <input id="answerField" placeholder="Answer"></input>
+            <button id="submitAnswer" class="btn">Submit Answer</button>
         </div>
-        <div id="playerScores">
+        <!-- <div id="playerScores">
             <div id="player1Score" class="playerScore">
                 <span class="playerName">Player 1: </span>
                 <span class="score">0</span>
@@ -63,7 +65,7 @@
                 <span class="playerName">Player 2: </span>
                 <span class="score">0</span>
             </div>
-        </div>
+        </div> -->
     </script>
 
     <!-- JS LIBRARIES-->

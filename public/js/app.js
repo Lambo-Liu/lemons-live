@@ -16,7 +16,8 @@ jQuery(
 				IO.socket.on("connected", IO.onConnected);
 				IO.socket.on("newGameCreated", IO.onNewGameCreated);
 				IO.socket.on("playerJoinedRoom", IO.playerJoinedRoom);
-				IO.socket.on("beginNewGame", IO.beginNewGame);
+				IO.socket.on("startGame", IO.startGame);
+				IO.socket.on("newQuestion", IO.onNewQuestion);
 
 				IO.socket.on("error", IO.error);
 			},
@@ -42,8 +43,15 @@ jQuery(
 				App[App.myRole].updateWaitingScreen(data);
 			},
 
-			beginNewGame: function(data) {
-				App[App.myRole].gameCountdown(data);
+			startGame: function(data) {
+				//this line from template giver error in console. u can look at it if u want
+				//App[App.myRole].gameCountdown(data);
+				console.log("starting game");
+				IO.socket.emit("getQuestion");
+			},
+
+			onNewQuestion: function(data) {
+				App[App.myRole].newQuestion(data);
 			},
 
 			error: function(data) {
@@ -86,6 +94,7 @@ jQuery(
 				// Player
 				App.$doc.on("click", "#btnJoinGame", App.Player.onJoinClick);
 				App.$doc.on("click", "#btnPlayerJoin", App.Player.onPlayerJoinClick);
+				App.$doc.on("click", "#submitAnswer", App.Player.getNewQuestion);
 			},
 
 			showInitScreen: function() {
@@ -166,7 +175,15 @@ jQuery(
 					// Set the Score section on screen to 0 for each player.
 					$("#player1Score").find(".score").attr("id", App.Host.players[0].mySocketId);
 					$("#player2Score").find(".score").attr("id", App.Host.players[1].mySocketId);
-				}
+				},
+
+				newQuestion: function(data) {
+					App.$gameArea.html(App.$hostGame);
+					// Update the data for the current round
+					// App.Host.currentCorrectAnswer = data.answer;
+					// App.Host.currentRound = data.round;
+				},
+
 			},
 
 			/********************
@@ -214,6 +231,20 @@ jQuery(
 				gameCountdown: function(hostData) {
 					App.Player.hostSocketId = hostData.mySocketId;
 					$("#gameArea").html('<div class="gameOver">Get Ready!</div>');
+				},
+
+				newQuestion: function(data) {
+					$("#gameArea").html(App.$hostGame);
+					// Insert the new word into the DOM
+					$("#question").text(data.question);
+
+					// Update the data for the current round
+					// App.Host.currentCorrectAnswer = data.answer;
+					// App.Host.currentRound = data.round;
+				},
+
+				getNewQuestion: function(data) {
+					IO.socket.emit("getNewQuestion");
 				}
 			},
 

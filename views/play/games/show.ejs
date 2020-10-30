@@ -29,20 +29,7 @@
         </div>
     </script>
 
-    <!-- This screen appears when a user clicks "CREATE" on the Title Screen -->
-    <script id="create-game-template" type="text/template">
-        <div class="createGameWrapper">
-            <div id="gameURL" class="infoBig">Error!</div>
-
-            <div class="info">Then click <strong>JOIN</strong> and <br/> enter the following Game ID:</div>
-            <div id="spanNewGameCode" class="gameId">Error!</div>
-
-            <p>Game started! Wating for players...</p>
-            <div id="playersWaiting"></div>
-        </div>
-    </script>
-
-    <!-- This scrreen appears when a player clicks "JOIN" on the Title Screen -->
+    <!-- This screen appears when a player clicks "JOIN" on the Title Screen -->
     <script id="join-game-template" type="text/template">
       <div class="joinGameWrapper">
           <div class="info">
@@ -64,19 +51,21 @@
 
     <!-- This is the 'Host' screen. It displays the word for each player to match -->
     <script id="host-game-template" type="text/template">
-      <div id="wordArea">
-          <div id="hostWord">5</div>
-      </div>
-      <div id="playerScores">
-          <div id="player1Score" class="playerScore">
-              <span class="playerName">Player 1: </span>
-              <span class="score">0</span>
-          </div>
-          <div id="player2Score" class="playerScore">
-              <span class="playerName">Player 2: </span>
-              <span class="score">0</span>
-          </div>
-      </div>
+        <div id="wordArea">
+            <div id="question"></div>
+            <input id="answerField" placeholder="Answer"></input>
+            <button id="submitAnswer" class="btn">Submit Answer</button>
+        </div>
+        <!-- <div id="playerScores">
+            <div id="player1Score" class="playerScore">
+                <span class="playerName">Player 1: </span>
+                <span class="score">0</span>
+            </div>
+            <div id="player2Score" class="playerScore">
+                <span class="playerName">Player 2: </span>
+                <span class="score">0</span>
+            </div>
+        </div> -->
     </script>
 
     <!-- JS LIBRARIES-->

@@ -16,9 +16,11 @@ jQuery(
 				IO.socket.on("connected", IO.onConnected);
 				IO.socket.on("newGameCreated", IO.onNewGameCreated);
 				IO.socket.on("playerJoinedRoom", IO.playerJoinedRoom);
-				IO.socket.on("beginNewGame", IO.beginNewGame);
+				IO.socket.on("startGame", IO.startGame);
+				IO.socket.on("giveQuestion", IO.giveQuestion);
 
 				IO.socket.on("error", IO.error);
+
 			},
 
 			onConnected: function(data) {
@@ -42,8 +44,15 @@ jQuery(
 				App[App.myRole].updateWaitingScreen(data);
 			},
 
-			beginNewGame: function(data) {
-				App[App.myRole].gameCountdown(data);
+			startGame: function(data) {
+				//this line from template giver error in console. u can look at it if u want
+				//App[App.myRole].gameCountdown(data);
+				console.log("starting game");
+				IO.socket.emit("getQuestion");
+			},
+
+			giveQuestion: function(data) {
+				App[App.myRole].displayQuestion(data);
 			},
 
 			error: function(data) {
@@ -166,6 +175,10 @@ jQuery(
 					// Set the Score section on screen to 0 for each player.
 					$("#player1Score").find(".score").attr("id", App.Host.players[0].mySocketId);
 					$("#player2Score").find(".score").attr("id", App.Host.players[1].mySocketId);
+				}, 
+
+				displayQuestion: function(data) {
+					document.getElementById("getQuestion").innerText = "testing";
 				}
 			},
 
@@ -214,7 +227,12 @@ jQuery(
 				gameCountdown: function(hostData) {
 					App.Player.hostSocketId = hostData.mySocketId;
 					$("#gameArea").html('<div class="gameOver">Get Ready!</div>');
+				},
+
+				displayQuestion: function(data) {
+					document.getElementById("getQuestion").innerText = "testing";
 				}
+	
 			},
 
 			/********************

@@ -11,7 +11,22 @@ exports.initGame = (sio, socket) => {
 	// Host events
 	gameSocket.on("hostCreateNewGame", hostCreateNewGame);
 	gameSocket.on("playerJoinGame", playerJoinGame);
+	gameSocket.on("hostRoomFull", startGame);
+	gameSocket.on("getQuestion", getQuestion);
 };
+
+function getQuestion() {
+	// random question and handling done here
+	// probably pick question and then add it to an array of used questions or something
+	var question = "sample question";
+	this.emit("giveQuestion", question);
+}
+
+function startGame() {
+	this.emit("startGame");
+	console.log("start game");
+}
+
 
 function hostCreateNewGame() {
 	// Create a unique Socket.IO Room

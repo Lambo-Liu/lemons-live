@@ -44,26 +44,6 @@
         </div>
     </script>
 
-    <!-- This scrreen appears when a player clicks "JOIN" on the Title Screen -->
-    <script id="join-game-template" type="text/template">
-      <div class="joinGameWrapper">
-          <div class="info">
-              <label for="inputPlayerName">Your Name:</label>
-              <input id="inputPlayerName" type="text" />
-          </div>
-
-          <div class="info">
-              <label for="inputGameId">Game ID:</label>
-              <input id="inputGameId" type="text"/>
-          </div>
-
-          <div class="info buttons">
-              <button id="btnPlayerJoin" class="btn">Join</button>
-              <div id="playerWaitingMessage"></div>
-          </div>
-      </div>
-    </script>
-
     <!-- This is the 'Host' screen. It displays the word for each player to match -->
     <script id="host-game-template" type="text/template">
         <div id="wordArea">
@@ -78,6 +58,7 @@
             </div>
         </div>
     </script>
+    <div id="getQuestion"></div>
 
     <!-- JS LIBRARIES-->
 

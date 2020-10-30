@@ -17,10 +17,9 @@ jQuery(
 				IO.socket.on("newGameCreated", IO.onNewGameCreated);
 				IO.socket.on("playerJoinedRoom", IO.playerJoinedRoom);
 				IO.socket.on("startGame", IO.startGame);
-				IO.socket.on("giveQuestion", IO.giveQuestion);
+				IO.socket.on("newQuestion", IO.onNewQuestion);
 
 				IO.socket.on("error", IO.error);
-
 			},
 
 			onConnected: function(data) {
@@ -51,8 +50,8 @@ jQuery(
 				IO.socket.emit("getQuestion");
 			},
 
-			giveQuestion: function(data) {
-				App[App.myRole].displayQuestion(data);
+			onNewQuestion: function(data) {
+				App[App.myRole].newQuestion(data);
 			},
 
 			error: function(data) {
@@ -175,10 +174,16 @@ jQuery(
 					// Set the Score section on screen to 0 for each player.
 					$("#player1Score").find(".score").attr("id", App.Host.players[0].mySocketId);
 					$("#player2Score").find(".score").attr("id", App.Host.players[1].mySocketId);
-				}, 
+				},
 
-				displayQuestion: function(data) {
-					document.getElementById("getQuestion").innerText = "testing";
+				newQuestion: function(data) {
+					App.$gameArea.html(App.$hostGame);
+					// Insert the new word into the DOM
+					$("#hostWord").text(data.question);
+
+					// Update the data for the current round
+					// App.Host.currentCorrectAnswer = data.answer;
+					// App.Host.currentRound = data.round;
 				}
 			},
 
@@ -229,10 +234,15 @@ jQuery(
 					$("#gameArea").html('<div class="gameOver">Get Ready!</div>');
 				},
 
-				displayQuestion: function(data) {
-					document.getElementById("getQuestion").innerText = "testing";
+				newQuestion: function(data) {
+					$("#gameArea").html(App.$hostGame);
+					// Insert the new word into the DOM
+					$("#hostWord").text(data.question);
+
+					// Update the data for the current round
+					// App.Host.currentCorrectAnswer = data.answer;
+					// App.Host.currentRound = data.round;
 				}
-	
 			},
 
 			/********************

@@ -1,6 +1,77 @@
-<% layout('./boilerplate') -%>
+<!DOCTYPE html>
+<html lang="en">
 
-<script src="/socket.io/socket.io.js"></script>
-<script>
-  var socket = io();
-</script>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lemons Live</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/modules/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="/modules/animatecss/animate.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins">
+    <script src="/modules/jquery/jquery.min.js"></script>
+  </head>
+
+  <style media="screen">
+    .shadow-svg {
+      -webkit-filter: drop-shadow(0 2px 4px -1px rgba(0,0,0,.06));
+      filter: drop-shadow(0 2px 4px -1px rgba(0,0,0,.06));
+    }
+
+    .title {
+      font-family: 'Poppins', sans-serif;
+      font-weight: bold;
+      line-height: 1.15;
+    }
+
+    .poppins {
+      font-family: 'Poppins', sans-serif;
+      font-weight: normal;
+    }
+
+    :root {
+      --animate-duration: 3s;
+      --animate-delay: 0.9s;
+    }
+
+    .animate__headShake {
+      --animate-duration: 8s;
+      --animate-delay: 5s;
+    }
+  </style>
+
+  <body class="w-full h-full bg-dark m-0 p-0">
+    <div class="absolute w-full h-full overflow-hidden">
+      <img class="animate__animated animate__infinite animate__pulse absolute shadow-svg z-10 h-auto" style="width: 12%; min-width: 8rem; left: 2%; top: 3%;" src="img/semi-red.svg" alt="Red Semicircle">
+      <img class="animate__animated animate__infinite animate__pulse absolute shadow-svg z-10 h-auto" style="width: 16%; min-width: 5rem; left: 94%; top: 75%;" src="img/semi-yellow.svg" alt="Yellow Semicircle">
+      <img class="animate__animated animate__infinite animate__pulse absolute shadow-svg z-10 h-auto" style="width: 19%; min-width: 8rem; left: 34%; top: -5%;" src="img/semi-teal.svg" alt="Teal Semicircle">
+      <img class="animate__animated animate__infinite animate__pulse absolute shadow-svg z-10 h-auto" style="width: 12%; min-width: 3rem; left: 53%; top: 76%;" src="img/semi-teal.svg" alt="Teal Semicircle">
+      <img class="animate__animated animate__infinite animate__pulse absolute shadow-svg z-10 h-auto" style="width: 19%; min-width: 6rem; left: -2%; top: 69%;" src="img/semi-purple.svg" alt="Purple Semicircle">
+      <img class="animate__animated animate__infinite animate__headShake absolute shadow-svg h-auto" style="width: 12%; min-width: 8rem; left: 16%; top: 64%;" src="img/line-red.svg" alt="Red Line">
+      <img class="animate__animated animate__infinite animate__headShake absolute shadow-svg h-auto" style="width: 19%; min-width: 8rem; left: 76%; top: 64%;" src="img/line-red.svg" alt="Red Line">
+      <img class="animate__animated animate__infinite animate__headShake absolute shadow-svg h-auto" style="width: 15%; min-width: 7rem; left: -3%; top: 39%;" src="img/line-yellow.svg" alt="Yellow Line">
+      <img class="animate__animated animate__infinite animate__headShake absolute shadow-svg h-auto" style="width: 16%; min-width: 5rem; left: 84%; top: 13%;" src="img/line-yellow.svg" alt="Yellow Line">
+      <img class="animate__animated animate__infinite animate__headShake absolute shadow-svg h-auto" style="width: 21%; min-width: 6rem; left: 3%; top: -12%;" src="img/line-teal.svg" alt="Teal Line">
+      <img class="animate__animated animate__infinite animate__headShake absolute shadow-svg h-auto" style="width: 12%; min-width: 3rem; left: 96%; top: 24%;" src="img/line-teal.svg" alt="Teal Line">
+      <img class="animate__animated animate__infinite animate__headShake absolute shadow-svg h-auto" style="width: 19%; min-width: 6rem; left: 23%; top: 93%;" src="img/line-purple.svg" alt="Purple Line">
+      <img class="animate__animated animate__infinite animate__headShake absolute shadow-svg h-auto" style="width: 14%; min-width: 7rem; left: 65%; top: -5%;" src="img/line-purple.svg" alt="Purple Line">
+    </div>
+    <div class="flex flex-row justify-center">
+      <div class="lg:w-10/12 w-11/12 h-full mt-16 px-4 mx-4 bg-dark-dark rounded-md shadow-2xl text-white z-20">
+        <div class="w-full p-4 lg:p-12 z-30" style="min-height: 600px;">
+          <div class="flex lg:flex-row flex-col justify-between items-start">
+            <img class="w-32 lg:w-64" src="/img/logo-live.png" alt="Lemons Live logo">
+            <div class="flex flex-row items-center">
+              <a id="/login" class="block px-4 py-2 mr-4 mt-2 text-sm font-semibold text-white bg-dark-light rounded-lg hover:text-white focus:text-white hover:bg-dark-light focus:bg-dark-light focus:outline-none focus:shadow-outline" href="/login"><i class="fa fa-sign-in-alt mr-2"></i>Sign In</a>
+              <a id="/register" class="block px-4 py-2 mt-2 text-sm font-semibold text-white bg-dark-light rounded-lg hover:text-white focus:text-white hover:bg-dark-light focus:bg-dark-light focus:outline-none focus:shadow-outline" href="/register"><i class="fa fa-user-plus mr-2"></i>Register</a>
+            </div>
+          </div>
+          <p class="title sm:text-6xl text-5xl sm:mt-12 sm:ml-4 sm:w-7/12 mt-12 text-wrap">A new way of learning.</p>
+          <p class="poppins sm:w-6/12 sm:ml-4 sm:mt-12 mt-8">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+        </div>
+        <img class="lg:block hidden absolute shadow-svg" style="right: 100px; top: 170px; width: 520px; min-width: 300px;" src="/img/landing-img.png" alt="Students playing learning game from Unsplash">
+      </div>
+    </div>
+  </body>
+
+</html>

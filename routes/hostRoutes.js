@@ -339,7 +339,7 @@ router.delete("/:id/:gameid", function(req, res) {
       req.flash("error", "You do not have permission to delete this class!");
       res.redirect("/dashboard");
     } else {
-      Class.updateOne({class: req.params.id}, {$pull: {games: req.params.gameid}}, function(err, updatedClass) {
+      Class.updateOne({_id: req.params.id}, {$pull: {games: req.params.gameid}}, function(err, updatedClass) {
         if (err) {
           returnErr(err);
         } else {

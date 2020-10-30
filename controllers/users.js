@@ -20,17 +20,17 @@ module.exports.register = async (req, res, next) => {
 
     if (!validateEmail(email)) {
       req.flash("error", "Your email is not in a valid format!");
-      res.redirect("register");
+      res.redirect("/register");
     }
 
     else if (!validatePassword(password)) {
       req.flash("error", "Your password must contain at least 8 characters and a number!");
-      res.redirect("register");
+      res.redirect("/register");
     }
 
     else if (role != "teacher" && role != "student") {
       req.flash("error", "Your account role must be of type teacher or student!");
-      res.redirect("register");
+      res.redirect("/register");
     }
 
     else {

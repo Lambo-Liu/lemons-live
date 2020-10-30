@@ -87,6 +87,7 @@ app.use(function(req, res, next) {
 app.use("/modules/fontawesome", express.static(__dirname + "/node_modules/@fortawesome/fontawesome-free/"));
 app.use("/modules/alpinejs", express.static(__dirname + "/node_modules/alpinejs/dist/"));
 app.use("/modules/jquery", express.static(__dirname + "/node_modules/jquery/dist/"));
+app.use("/modules/animatecss", express.static(__dirname + "/node_modules/animate.css/"));
 
 const userRoutes = require("./routes/userRoutes");
 const hostRoutes = require("./routes/hostRoutes");

@@ -12,35 +12,43 @@ exports.initGame = (sio, socket) => {
 	gameSocket.on("hostCreateNewGame", hostCreateNewGame);
 	gameSocket.on("hostRoomFull", hostStartGame);
 
-
 	// Player events
 	gameSocket.on("playerJoinGame", playerJoinGame);
 	gameSocket.on("getNewQuestion", sendQuestion);
 };
 
-function sendQuestion(gameId) {
+function sendQuestion(dataid) {
 	// random question and handling done here
 	// probably pick question and then add it to an array of used questions or something
 	var data = getNewQuestion();
 	// io.sockets.in(gameId).emit("newQuestion", data);
-	io.sockets.emit("newQuestion", data);
+	console.log(data.question);
+	if (data.question) {
+		io.sockets.in(dataid.gameId).emit("newQuestion", data);
+		//io.to(dataid.socketId).emit("newQuestion", data);
+	}
+	else {
+		io.sockets.in(dataid.gameId).emit("gameOver", data);
+		//io.to(dataid.socketId).emit("newQuestion", data);
+	}
 }
 
 function getNewQuestion() {
-	let questions = [ "2 + 2", " 4 + 4", "what colour is the sun"];
 	let max = questions.length;
-	let min = 0;
-	let index = Math.floor(Math.random() * (max - min)) + min;
-
+	let index = Math.floor(Math.random() * max);
 	let data = { question: questions[index] };
+	questions.splice(index, 1);
+	console.log(questions);
 
 	return data;
 }
 
-
 function hostStartGame(gameId) {
 	console.log("game started");
-	sendQuestion(gameId);
+	data = {
+		gameId: gameId
+	};
+	sendQuestion(data);
 }
 
 function hostCreateNewGame() {
@@ -61,7 +69,7 @@ function playerJoinGame(data) {
 	let sock = this;
 
 	// Look up the room ID in the Socket.IO manager object.
-	console.log(gameSocket.rooms);
+	//console.log(gameSocket.rooms);
 	let room = gameSocket.rooms;
 
 	// If the room exists...
@@ -82,3 +90,5 @@ function playerJoinGame(data) {
 		this.emit("error", { message: "This room does not exist." });
 	}
 }
+
+let questions = ["2 + 2", " 4 + 4", "what colour is the sun"];

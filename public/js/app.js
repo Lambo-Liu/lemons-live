@@ -150,7 +150,7 @@ jQuery(
 						// console.log('Room is full. Almost ready!');
 
 						// Let the server know that two players are present.
-						IO.socket.emit("hostRoomFull", App.gameId);
+						IO.socket.emit("hostRoomFull", { gameId: App.gameId, socketId: App.mySocketId });
 					}
 				},
 
@@ -182,8 +182,7 @@ jQuery(
 					// Update the data for the current round
 					// App.Host.currentCorrectAnswer = data.answer;
 					// App.Host.currentRound = data.round;
-				},
-
+				}
 			},
 
 			/********************
@@ -243,8 +242,8 @@ jQuery(
 					// App.Host.currentRound = data.round;
 				},
 
-				getNewQuestion: function(data) {
-					IO.socket.emit("getNewQuestion");
+				getNewQuestion: function() {
+					IO.socket.emit("getNewQuestion", { gameId: App.gameId, socketId: App.mySocketId });
 				}
 			},
 

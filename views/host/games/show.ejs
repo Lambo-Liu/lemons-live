@@ -24,7 +24,6 @@
             </div>
             <div class="buttons">
                 <button id="btnCreateGame" class="btn left">Create</button>
-                <button id="btnJoinGame" class="btn right">Join</button>
                 <div style="clear:both"></div>
             </div>
         </div>
@@ -40,6 +39,8 @@
 
             <p>Game started! Wating for players...</p>
             <div id="playersWaiting"></div>
+
+            <button id="btnHostStart">Start</button>
         </div>
     </script>
 
@@ -63,6 +64,21 @@
       </div>
     </script>
 
+    <!-- This is the 'Host' screen. It displays the word for each player to match -->
+    <script id="host-game-template" type="text/template">
+        <div id="wordArea">
+            <div id="hostWord">5</div>
+        </div>
+        <div id="playerScores">
+            <div id="player1Score" class="playerScore">
+                <span class="score">0</span><span class="playerName">Player 1</span>
+            </div>
+            <div id="player2Score" class="playerScore">
+                <span class="playerName">Player 2</span><span class="score">0</span>
+            </div>
+        </div>
+    </script>
+
     <!-- JS LIBRARIES-->
 
     <!-- jquery -->
@@ -75,12 +91,3 @@
     <script src="/js/app.js" charset="utf-8"></script>
 </body>
 </html>
-
-<script>
-    var socket = io();
-
-    socket.on('connect', function(data) {
-        socket.emit('test-question', 'whats up?');
-
-    });
-</script>

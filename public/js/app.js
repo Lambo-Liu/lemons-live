@@ -16,6 +16,7 @@ jQuery(
 				IO.socket.on("connected", IO.onConnected);
 				IO.socket.on("newGameCreated", IO.onNewGameCreated);
 				IO.socket.on("playerJoinedRoom", IO.playerJoinedRoom);
+				IO.socket.on("beginNewGame", IO.beginNewGame);
 
 				IO.socket.on("error", IO.error);
 			},
@@ -39,6 +40,10 @@ jQuery(
 				// So on the 'host' browser window, the App.Host.updateWiatingScreen function is called.
 				// And on the player's browser, App.Player.updateWaitingScreen is called.
 				App[App.myRole].updateWaitingScreen(data);
+			},
+
+			beginNewGame: function(data) {
+				App[App.myRole].gameCountdown(data);
 			},
 
 			error: function(data) {
@@ -69,12 +74,14 @@ jQuery(
 				App.$templateIntroScreen = $("#intro-screen-template").html();
 				App.$templateNewGame = $("#create-game-template").html();
 				App.$templateJoinGame = $("#join-game-template").html();
+				App.$hostGame = $("#host-game-template").html();
 			},
 
 			// THESE EVENTS ARE CALLED FROM HTML INTERACTION
 			bindEvents: function() {
 				// Host
 				App.$doc.on("click", "#btnCreateGame", App.Host.onCreateClick);
+				App.$doc.on("click", "#btnHostStart", App.Host.onStartClick);
 
 				// Player
 				App.$doc.on("click", "#btnJoinGame", App.Player.onJoinClick);
@@ -136,6 +143,29 @@ jQuery(
 						// Let the server know that two players are present.
 						IO.socket.emit("hostRoomFull", App.gameId);
 					}
+				},
+
+				onStartClick: function() {
+					IO.socket.emit("hostRoomFull", App.gameId);
+				},
+
+				gameCountdown: function() {
+					// Prepare the game screen with new HTML
+					App.$gameArea.html(App.$hostGame);
+
+					// Begin the on-screen countdown timer
+					let $secondsLeft = $("#hostWord");
+					App.countDown($secondsLeft, 5, function() {
+						IO.socket.emit("hostCountdownFinished", App.gameId);
+					});
+
+					// Display the players' names on screen
+					$("#player1Score.playerName").html(App.Host.players[0].playerName);
+					$("#player2Score.playerName").html(App.Host.players[1].playerName);
+
+					// Set the Score section on screen to 0 for each player.
+					$("#player1Score").find(".score").attr("id", App.Host.players[0].mySocketId);
+					$("#player2Score").find(".score").attr("id", App.Host.players[1].mySocketId);
 				}
 			},
 
@@ -150,14 +180,14 @@ jQuery(
 					// console.log('Clicked "Join A Game"');
 					// Display the Join Game HTML on the player's screen.
 					App.$gameArea.html(App.$templateJoinGame);
-					console.log(IO.socket.manager);
+					// console.log(IO.socket.manager);
 				},
 
 				onPlayerJoinClick: function() {
 					console.log('Player clicked "Join"');
 
 					// collect data to send to the server
-					var data = {
+					let data = {
 						gameId: +$("#inputGameId").val(),
 						playerName: $("#inputPlayerName").val() || "anon"
 					};
@@ -178,6 +208,38 @@ jQuery(
 						$("#playerWaitingMessage")
 							.append("<p/>")
 							.text("Joined Game " + data.gameId + ". Please wait for game to begin.");
+					}
+				},
+
+				gameCountdown: function(hostData) {
+					App.Player.hostSocketId = hostData.mySocketId;
+					$("#gameArea").html('<div class="gameOver">Get Ready!</div>');
+				}
+			},
+
+			/********************
+			***  UTILITY CODE  ***
+			*********************/
+			countDown: function($el, startTime, callback) {
+				// Display the starting time on the screen.
+				$el.text(startTime);
+				// console.log('Starting Countdown...');
+
+				// Start a 1 second timer
+				var timer = setInterval(countItDown, 1000);
+
+				// Decrement the displayed timer value on each 'tick'
+				function countItDown() {
+					startTime -= 1;
+					$el.text(startTime);
+
+					if (startTime <= 0) {
+						// console.log('Countdown Finished.');
+
+						// Stop the timer and do the callback.
+						clearInterval(timer);
+						callback();
+						return;
 					}
 				}
 			}

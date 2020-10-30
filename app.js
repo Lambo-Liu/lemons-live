@@ -3,8 +3,8 @@ const app = express();
 const engine = require("ejs-mate");
 const session = require("express-session");
 const flash = require("connect-flash");
-const http = require("http").Server(app);
-const io = require("socket.io")(http)
+const http = require("http").createServer(app);
+const io = require("socket.io")(http);
 const mongoose = require("mongoose");
 const path = require("path");
 const methodOverride = require("method-override");
@@ -103,15 +103,10 @@ app.get("/", function(req, res) {
 	res.render("home", { user: req.user });
 });
 
-
 io.on("connection", (socket) => {
-    console.log("user connected");
-    quiz.initGame(io, socket);
-    socket.on('test-question', function(questionData) {
-        socket.broadcast.emit('deliver-question', {question: questionData});
-    })
+	console.log("a user connected");
+	quiz.initGame(io, socket);
 });
-
 
 http.listen(port, hostname, function() {
 	console.log(`Server running at http://${hostname}:${port}/`);

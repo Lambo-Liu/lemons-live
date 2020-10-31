@@ -47,7 +47,7 @@ jQuery(
 
 			startGame: function(data) {
 				//this line from template giver error in console. u can look at it if u want
-				//App[App.myRole].gameCountdown(data);
+				App[App.myRole].gameCountdown(data);
 				console.log("starting game");
 				IO.socket.emit("getQuestion");
 			},
@@ -62,7 +62,6 @@ jQuery(
 				// if (App.myRole === "Host") {
 				// 	App.Host.checkAnswer(data);
 				// }
-				//App.Host.checkAnswer(data);
 				App["Host"].checkAnswer(data);
 			},
 
@@ -174,6 +173,14 @@ jQuery(
 
 				onStartClick: function() {
 					IO.socket.emit("hostRoomFull", { gameId: App.gameId, socketId: App.mySocketId });
+					// Set the Score section on screen to 0 for each player.
+					App.$gameArea.html(App.$hostGame);
+
+					// for loop for dynamic setup of students is here. beware in the ejs file there are only two current team/player scores so more may need to be added
+					// perhaps dynamically here using the div they are all inside.
+
+					$("#player1Score").find(".score").attr("id", App.Host.players[0].mySocketId);
+					$("#player2Score").find(".score").attr("id", App.Host.players[1].mySocketId);
 				},
 
 				gameCountdown: function() {
@@ -196,10 +203,6 @@ jQuery(
 				},
 
 				newQuestion: function(data) {
-					App.$gameArea.html(App.$hostGame);
-					// Set the Score section on screen to 0 for each player.
-					$("#player1Score").find(".score").attr("id", App.Host.players[0].mySocketId);
-					$("#player2Score").find(".score").attr("id", App.Host.players[1].mySocketId);
 					// Update the data for the current round
 					App.Host.currentCorrectAnswer = data.answer;
 				},
@@ -207,17 +210,12 @@ jQuery(
 				checkAnswer: function(data) {
 					// Get the player's score
 					let $pScore = $("#" + data.playerId);
+					console.log(data.playerId);
 
 					// Advance player's score if it is correct
 					if (App.Host.currentCorrectAnswer === data.answer) {
 						// Add 100 to the player's score
-						console.log(+$pScore.text());
-						var score = Number($pScore.text())
-						score += 100;
-						console.log(String(score));
-						// problem here
-						$pScore.text(String(score));
-						$pScore.css("background-color", "green")
+						$pScore.text(+$pScore.text() + 100);
 						$("#answerField").css("background-color", "green");
 					}
 					else {
@@ -279,7 +277,7 @@ jQuery(
 
 				newQuestion: function(data) {
 					$("#gameArea").html(App.$hostGame);
-					// Insert the new word into the DOM
+					// Insert the new question into the DOM
 					$("#question").text(data.question);
 
 					// Update the data for the current round

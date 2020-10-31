@@ -71,7 +71,7 @@ function getNewQuestion() {
 
 function playerAnswer(data) {
 	// console.log('Player ID: ' + data.playerId + ' answered a question with: ' + data.answer);
-	io.to(data.playerId).emit("hostCheckAnswer", data);
+	io.sockets.emit("hostCheckAnswer", data);
 }
 
 function hostStartGame(data) {
@@ -80,7 +80,7 @@ function hostStartGame(data) {
 	//console.log(data);
 	sendQuestion(data);
 
-	var counter = 10;
+	var counter = 60;
 	var countdown = setInterval(function(){
 	  io.sockets.emit('count', counter);
 	  counter--;

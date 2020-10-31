@@ -67,7 +67,8 @@ jQuery(
 			},
 
 			gameOver: function(data) {
-				App[App.myRole].endGame(data);
+				App["Player"].endGame(data);
+				console.log("ending game");
 			},
 
 			error: function(data) {
@@ -210,7 +211,13 @@ jQuery(
 					// Advance player's score if it is correct
 					if (App.Host.currentCorrectAnswer === data.answer) {
 						// Add 100 to the player's score
-						$pScore.text(+$pScore.text() + 100);
+						console.log(+$pScore.text());
+						var score = Number($pScore.text())
+						score += 100;
+						console.log(String(score));
+						// problem here
+						$pScore.text(String(score));
+						$pScore.css("background-color", "green")
 						$("#answerField").css("background-color", "green");
 					}
 					else {

@@ -79,6 +79,17 @@ function hostStartGame(data) {
 	data.round = 0;
 	//console.log(data);
 	sendQuestion(data);
+
+	var counter = 10;
+	var countdown = setInterval(function(){
+	  io.sockets.emit('count', counter);
+	  counter--;
+	  console.log(counter);
+	  if (counter === 0) {
+		io.sockets.emit('gameOver', "Game Over!!");
+		clearInterval(countdown);
+	  }
+	}, 1000);
 }
 
 function hostCreateNewGame() {

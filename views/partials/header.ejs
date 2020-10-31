@@ -31,8 +31,11 @@
               </div>
             </div>
             <a id="home" class="block px-4 py-2 mt-2 text-sm font-semibold text-white bg-transparent rounded-lg hover:text-white focus:text-white hover:bg-dark-light focus:bg-dark-light focus:outline-none focus:shadow-outline" href="/"><i class="fa fa-home mr-2"></i>Home</a>
-            <a id="dashboard" class="block px-4 py-2 mt-2 text-sm font-semibold text-white bg-transparent rounded-lg hover:text-white focus:text-white hover:bg-dark-light focus:bg-dark-light focus:outline-none focus:shadow-outline" href="/dashboard"><i class="fa fa-tachometer-alt mr-2"></i>Dashboard</a>
-            <a id="play" class="block px-4 py-2 mt-2 text-sm font-semibold text-white bg-transparent rounded-lg hover:text-white focus:text-white hover:bg-dark-light focus:bg-dark-light focus:outline-none focus:shadow-outline" href="/play"><i class="fa fa-chalkboard mr-2"></i>Play</a>
+            <% if (user.isTeacher === true) { %>
+              <a id="dashboard" class="block px-4 py-2 mt-2 text-sm font-semibold text-white bg-transparent rounded-lg hover:text-white focus:text-white hover:bg-dark-light focus:bg-dark-light focus:outline-none focus:shadow-outline" href="/dashboard"><i class="fa fa-tachometer-alt mr-2"></i>Dashboard</a>
+            <% } else { %>
+              <a id="play" class="block px-4 py-2 mt-2 text-sm font-semibold text-white bg-transparent rounded-lg hover:text-white focus:text-white hover:bg-dark-light focus:bg-dark-light focus:outline-none focus:shadow-outline" href="/play"><i class="fa fa-chalkboard mr-2"></i>Play</a>
+            <% } %>
           </div>
           <div class="lg:mt-auto lg:mb-8">
             <a class="block px-4 py-2 mt-2 text-sm font-semibold text-white bg-transparent rounded-lg hover:text-white focus:text-white hover:bg-dark-light focus:bg-dark-light focus:outline-none focus:shadow-outline" href="/logout"><i class="fa fa-sign-out-alt mr-2"></i>Log Out</a>

@@ -1,11 +1,43 @@
 <% layout('./boilerplate') -%>
 
-<a href="/dashboard/new">Create Class</a><br><br>
+<div class="w-full flex flex-row justify-center py-4 lg:px-16 sm:px-4">
+  <div class="bg-light shadow rounded-md w-full lg:pb-6 pb-4 lg:p-16 p-8" style="min-height: 690px;">
+    <p class="lg:text-2xl text-xl font-bold">Teacher Dashboard</p>
+    <hr class="text-light-dark my-6">
+    <div class="flex flex-row justify-between content-center mb-8">
+      <p class="text-lg my-1"> My Classes </p>
+      <div>
+        <a href="/dashboard/new">
+          <button type="button" class="text-sm bg-green-700 hover:bg-green-600 text-white border-b-2 rounded py-2 px-4 border-dark shadow">
+            <i class="fa fa-plus mr-1"></i>
+            New Class
+          </button>
+        </a>
+      </div>
+    </div>
 
-<% classes.forEach(function(eachClass) { %>
-    <p>Class Title: <%= eachClass.title %></p>
-    <a href="/dashboard/<%= eachClass._id %>">View Class</a>
-    <form action="/dashboard/<%= eachClass._id %>?_method=DELETE" method="POST">
+    <div class="flex sm:flex-row flex-col flex-wrap" style="margin-left: -1rem; margin-right: -1rem;">
+      <% classes.forEach(function(eachClass) { %>
+        <div class="flex justify-center xl:w-4/12 sm:w-6/12 w-full px-4 mb-8">
+          <a href="/dashboard/<%= eachClass._id %>">
+            <div class="max-w-sm rounded overflow-hidden shadow-lg">
+              <img class="w-full h-56 object-cover" src="/img/card-top-1.jpg" alt="Math stock image from Unsplash">
+              <div class="px-6 py-4">
+                <div class="font-bold text-lg mb-2"><%= eachClass.title %></div>
+                <p class="text-gray-700 text-sm">
+                  <span class="line-cut-2">This is a dummy text for the class description, which will be written by the class teacher.</span> <br/>
+                  <span class="font-semibold">Students: </span> <%= eachClass.students.length %> <br/>
+                  <span class="font-semibold">Games: </span> <%= eachClass.games.length %> <br/>
+                </p>
+              </div>
+            </div>
+          </a>
+        </div>
+      <% }); %>
+    </div>
+
+    <!-- <form action="/dashboard/classID?_method=DELETE" method="POST">
         <button type="submit">Delete</button>
-    </form>
-<% }); %>
+    </form> -->
+  </div>
+</div>

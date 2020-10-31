@@ -18,7 +18,9 @@ jQuery(
 				IO.socket.on("playerJoinedRoom", IO.playerJoinedRoom);
 				IO.socket.on("startGame", IO.startGame);
 				IO.socket.on("newQuestion", IO.onNewQuestion);
+				IO.socket.on("hostCheckAnswer", IO.hostCheckAnswer);
 
+				IO.socket.on("gameOver", IO.gameOver);
 				IO.socket.on("error", IO.error);
 			},
 
@@ -52,6 +54,21 @@ jQuery(
 
 			onNewQuestion: function(data) {
 				App[App.myRole].newQuestion(data);
+			},
+
+			hostCheckAnswer: function(data) {
+				// console.log(data);
+				// console.log(App.myRole)
+				// if (App.myRole === "Host") {
+				// 	App.Host.checkAnswer(data);
+				// }
+				//App.Host.checkAnswer(data);
+				App["Host"].checkAnswer(data);
+			},
+
+			gameOver: function(data) {
+				App["Player"].endGame(data);
+				console.log("ending game");
 			},
 
 			error: function(data) {
@@ -94,7 +111,9 @@ jQuery(
 				// Player
 				App.$doc.on("click", "#btnJoinGame", App.Player.onJoinClick);
 				App.$doc.on("click", "#btnPlayerJoin", App.Player.onPlayerJoinClick);
-				App.$doc.on("click", "#submitAnswer", App.Player.getNewQuestion);
+				//App.$doc.on("click", "#btnSubmitAnswer", App.Player.getNewQuestion);
+				App.$doc.on("click", "#btnSubmitAnswer", App.Player.onPlayerAnswerClick);
+				App.$doc.on("click", "#btnNextQuestion", App.Player.getNewQuestionClick);
 			},
 
 			showInitScreen: function() {
@@ -148,14 +167,13 @@ jQuery(
 					// If two players have joined, start the game!
 					if (App.Host.numPlayersInRoom === 2) {
 						// console.log('Room is full. Almost ready!');
-
 						// Let the server know that two players are present.
 						IO.socket.emit("hostRoomFull", { gameId: App.gameId, socketId: App.mySocketId });
 					}
 				},
 
 				onStartClick: function() {
-					IO.socket.emit("hostRoomFull", App.gameId);
+					IO.socket.emit("hostRoomFull", { gameId: App.gameId, socketId: App.mySocketId });
 				},
 
 				gameCountdown: function() {
@@ -179,9 +197,36 @@ jQuery(
 
 				newQuestion: function(data) {
 					App.$gameArea.html(App.$hostGame);
+					// Set the Score section on screen to 0 for each player.
+					$("#player1Score").find(".score").attr("id", App.Host.players[0].mySocketId);
+					$("#player2Score").find(".score").attr("id", App.Host.players[1].mySocketId);
 					// Update the data for the current round
-					// App.Host.currentCorrectAnswer = data.answer;
-					// App.Host.currentRound = data.round;
+					App.Host.currentCorrectAnswer = data.answer;
+				},
+
+				checkAnswer: function(data) {
+					// Get the player's score
+					let $pScore = $("#" + data.playerId);
+
+					// Advance player's score if it is correct
+					if (App.Host.currentCorrectAnswer === data.answer) {
+						// Add 100 to the player's score
+						console.log(+$pScore.text());
+						var score = Number($pScore.text())
+						score += 100;
+						console.log(String(score));
+						// problem here
+						$pScore.text(String(score));
+						$pScore.css("background-color", "green")
+						$("#answerField").css("background-color", "green");
+					}
+					else {
+						$pScore.text(+$pScore.text() - 20);
+						$("#answerField").css("background-color", "red");
+					}
+
+					$("#btnSubmitAnswer").css("display", "none");
+					$("#btnNextQuestion").css("display", "block");
 				}
 			},
 
@@ -238,12 +283,30 @@ jQuery(
 					$("#question").text(data.question);
 
 					// Update the data for the current round
-					// App.Host.currentCorrectAnswer = data.answer;
+					App.Host.currentCorrectAnswer = data.answer;
 					// App.Host.currentRound = data.round;
 				},
 
-				getNewQuestion: function() {
+				getNewQuestionClick: function() {
 					IO.socket.emit("getNewQuestion", { gameId: App.gameId, socketId: App.mySocketId });
+				},
+
+				onPlayerAnswerClick: function() {
+					//console.log("Clicked Answer Button");
+					let answer = $("#answerField").val();
+					//console.log(answer);
+
+					let data = {
+						gameId: App.gameId,
+						playerId: App.mySocketId,
+						answer: answer
+					};
+					//console.log(data);
+					IO.socket.emit("playerAnswer", data);
+				},
+
+				endGame: function() {
+					$("#gameArea").html('<div class="gameOver">Game Over!</div>');
 				}
 			},
 

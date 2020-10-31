@@ -15,17 +15,23 @@ exports.initGame = (sio, socket) => {
 	// Player events
 	gameSocket.on("playerJoinGame", playerJoinGame);
 	gameSocket.on("getNewQuestion", sendQuestion);
+	gameSocket.on("playerAnswer", playerAnswer);
 };
 
 function sendQuestion(dataid) {
 	// random question and handling done here
 	// probably pick question and then add it to an array of used questions or something
-	var data = getNewQuestion();
+	let data = getNewQuestion();
 	// io.sockets.in(gameId).emit("newQuestion", data);
 	console.log(data.question);
-	if (data.question) {
+	console.log(dataid);
+
+	if (dataid.round === 0) {
 		io.sockets.in(dataid.gameId).emit("newQuestion", data);
-		//io.to(dataid.socketId).emit("newQuestion", data);
+	}
+	else if (data.question) {
+		//io.sockets.in(dataid.gameId).emit("newQuestion", data);
+		io.to(dataid.socketId).emit("newQuestion", data);
 	}
 	else {
 		io.sockets.in(dataid.gameId).emit("gameOver", data);
@@ -34,21 +40,56 @@ function sendQuestion(dataid) {
 }
 
 function getNewQuestion() {
+	let questions = [
+		{
+			question: "What is 2+2?",
+			answer: "4",
+			solution: "2+2 = 4. Refer to textbook chapter 1."
+		},
+
+		{
+			question: "What is 7*8?",
+			answer: "56",
+			solution: "7*8 = 56. Refer to textbook chapter 2."
+		},
+
+		{
+			question: "What is 10^2?",
+			answer: "100",
+			solution: "10^2 = 10*10 = 100. Refer to textbook chapter 2.2."
+		}
+	];
+
 	let max = questions.length;
 	let index = Math.floor(Math.random() * max);
-	let data = { question: questions[index] };
-	questions.splice(index, 1);
+	let data = questions[index];
+	//questions.splice(index, 1);
 	console.log(questions);
 
 	return data;
 }
 
-function hostStartGame(gameId) {
+function playerAnswer(data) {
+	// console.log('Player ID: ' + data.playerId + ' answered a question with: ' + data.answer);
+	io.to(data.playerId).emit("hostCheckAnswer", data);
+}
+
+function hostStartGame(data) {
 	console.log("game started");
-	data = {
-		gameId: gameId
-	};
+	data.round = 0;
+	//console.log(data);
 	sendQuestion(data);
+
+	var counter = 10;
+	var countdown = setInterval(function(){
+	  io.sockets.emit('count', counter);
+	  counter--;
+	  console.log(counter);
+	  if (counter === 0) {
+		io.sockets.emit('gameOver', "Game Over!!");
+		clearInterval(countdown);
+	  }
+	}, 1000);
 }
 
 function hostCreateNewGame() {
@@ -90,5 +131,3 @@ function playerJoinGame(data) {
 		this.emit("error", { message: "This room does not exist." });
 	}
 }
-
-let questions = ["2 + 2", " 4 + 4", "what colour is the sun"];

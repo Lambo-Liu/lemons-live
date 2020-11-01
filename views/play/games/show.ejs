@@ -94,7 +94,9 @@
       <div class="xl:w-8/12 lg:w-10/12 w-11/12 px-4 mx-4 bg-dark-dark rounded-md shadow-2xl text-white z-20">
         <div class="flex flex-col items-center w-full p-4 lg:p-12 z-30" style="min-height: 600px;">
           <img class="w-40 mb-8" src="/img/logo-live.png" alt="Lemons Live logo">
-          <p class="text-xl text-center mb-6 w-full mx-4" id="question"></p>
+          <div id="teamScores">
+          </div>
+          <p class="text-xl text-center mb-6 mt-4 w-full mx-4" id="question"></p>
           <div class="mt-auto flex flex-row w-full mx-6 items-center justify-between">
             <div class="w-full px-3 mb-6">
               <label class="block uppercase tracking-wide text-xs font-bold mb-2" for="grid-password">
@@ -103,10 +105,10 @@
               <input class="appearance-none block w-full bg-light-dark text-dark rounded py-2 px-4 mb-3 leading-tight focus:outline-none focus:bg-light" id="answer" type="text" placeholder="Enter your answer here">
             </div>
             <div id="nextQuestion">
+              <button id="btnSubmitQuestion" type="button" class="mb-3 ml-2 font-semibold bg-theme4 hover:bg-theme3 text-dark border-b-2 rounded py-2 px-4 border-dark shadow">
+                Submit
+              </button>
             </div>
-            <button id="btnSubmitQuestion" type="button" class="mb-3 ml-2 font-semibold bg-theme4 hover:bg-theme3 text-dark border-b-2 rounded py-2 px-4 border-dark shadow">
-              Submit
-            </button>
           </div>
         </div>
       </div>
@@ -159,10 +161,10 @@
     </div>
     <div class="flex flex-col text-center h-full justify-center items-center text-light z-20">
       <div class="xl:w-8/12 lg:w-10/12 w-11/12 ">
-        <div class="text-5xl font-bold">
+        <div class="text-5xl font-bold z-20">
           Congratulations to <span class="text-theme3" id="first-team"></span> for placing first!
         </div>
-        <div class="text-2xl mt-6 font-semibold text-light" id="leaderboard">
+        <div class="text-2xl mt-6 font-semibold text-light z-20" id="leaderboard">
 
         </div>
       </div>

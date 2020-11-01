@@ -47,7 +47,6 @@ socket.on("showProgress", function(numTeams) {
 });
 
 socket.on("updateProgress", function(isCorrect, team, username, question, userAnswer) {
-  console.log("updating progress");
   let score = document.getElementById("team"+team+"Score");
 
   if (isCorrect === 1) {

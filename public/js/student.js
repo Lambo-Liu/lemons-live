@@ -31,9 +31,12 @@ socket.on("userLeft", function(username, userCount) {
   document.getElementById("userCount").innerHTML = userCount;
 });
 
-socket.on("firstQuestion", function(question) {
+socket.on("firstQuestion", function(question, numTeams) {
   gameArea.innerHTML = document.getElementById("question-template").innerHTML;
   document.getElementById("question").innerHTML = question.question;
+  for (let i = 0; i < numTeams; i++) {
+    $("#teamScores").append(`<p> Team ${i+1}: <span id="team${i+1}Score">0</span></p>`);
+  }
 
   document.getElementById("btnSubmitQuestion").addEventListener("click", function(e) {
     e.preventDefault();
@@ -60,8 +63,13 @@ socket.on("questionChecked", function(isCorrect) {
   });
 });
 
-socket.on("showNextQuestion", function(question) {
-  gameArea.innerHTML = document.getElementById("question-template").innerHTML;
+socket.on("showNextQuestion", function(question, numTeams) {
+  document.getElementById("btnNextQuestion").remove();
+  $("#nextQuestion").append(`<button id="btnSubmitQuestion" type="button" class="mb-3 ml-2 font-semibold bg-theme4 hover:bg-theme3 text-dark border-b-2 rounded py-2 px-4 border-dark shadow">Submit</button>`);
+  document.getElementById("answer").value = "";
+  document.getElementById("answer").classList.remove("bg-green-300");
+  document.getElementById("answer").classList.remove("bg-red-300");
+  document.getElementById("answer").classList.add("bg-light-dark");
   document.getElementById("question").innerHTML = question.question;
 
   document.getElementById("btnSubmitQuestion").addEventListener("click", function(e) {
@@ -71,13 +79,24 @@ socket.on("showNextQuestion", function(question) {
   });
 });
 
+socket.on("updateProgress", function(isCorrect, team, username, question, userAnswer) {
+  console.log("updating progress");
+  let score = document.getElementById("team"+team+"Score");
+
+  if (isCorrect === 1) {
+    score.innerHTML = Number(score.innerHTML) + 100;
+  } else {
+    score.innerHTML = Number(score.innerHTML) - 20;
+  }
+});
+
 socket.on("teamFinished", function() {
   gameArea.innerHTML = document.getElementById("finish-template").innerHTML;
 
   socket.emit("waitingGameOver")
 });
 
-socket.on("gameOver", function() {
+socket.on("gameOver", function(team) {
   gameArea.innerHTML = document.getElementById("team-win-template").innerHTML;
-  //first-team
+  document.getElementById("first-team").innerHTML = "Team " + team;
 });

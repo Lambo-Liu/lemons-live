@@ -13,6 +13,7 @@ var timer;
 var questions;
 var teams = new Array();
 var teamProgress = new Array();
+var teamPoints = new Array();
 
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
@@ -94,6 +95,7 @@ exports.initGame = (io, socket) => {
 			// Initialize 2d array of teams
       for (let k = 0; k < numTeams; k++) {
         teams.push([]);
+        teamPoints.push(0)
         teamProgress[k] = 0;
       }
 			// Set teams
@@ -119,7 +121,7 @@ exports.initGame = (io, socket) => {
               }
               GameLog.create(gameLogObj, function(err, newGameLog) {
                 User.findOneAndUpdate({_id: teams[i][j]}, {$push: {gamesLog: newGameLog._id}}, function(err, updatedUser) {
-                  io.to(teams[i][j]).emit("firstQuestion", foundQuestion);
+                  io.to(teams[i][j]).emit("firstQuestion", foundQuestion, numTeams);
     							io.to(hostId).emit("showProgress", numTeams);
                 });
               });
@@ -141,13 +143,15 @@ exports.initGame = (io, socket) => {
 
         if (userAnswer === question.answer) {
           GameLog.findOneAndUpdate({student: userId, game: socket.room}, {$inc: {score: 100}, $push: {questions: questionObj}}, function(err, updatedGameLog) {
+            teamPoints[foundGameLog.team-1] += 100;
             io.to(userId).emit("questionChecked", 1);
-            io.to(hostId).emit("updateProgress", 1, foundGameLog.team, username, question.question, userAnswer);
+            io.to(socket.room).emit("updateProgress", 1, foundGameLog.team, username, question.question, userAnswer);
           });
         } else {
           GameLog.findOneAndUpdate({student: userId, game: socket.room}, {$inc: {score: -20}, $push: {questions: questionObj}}, function(err, updatedGameLog) {
+            teamPoints[foundGameLog.team-1] -= 20;
             io.to(userId).emit("questionChecked", 0);
-            io.to(hostId).emit("updateProgress", 0, foundGameLog.team, username, question.question, userAnswer);
+            io.to(socket.room).emit("updateProgress", 0, foundGameLog.team, username, question.question, userAnswer);
           });
         }
       });
@@ -165,7 +169,7 @@ exports.initGame = (io, socket) => {
       } else {
         Question.findOne({_id: questions[teamProgress[foundGameLog.team-1]]}, function(err, foundQuestion) {
           console.log(foundQuestion);
-          io.to(userId).emit("showNextQuestion", foundQuestion);
+          io.to(userId).emit("showNextQuestion", foundQuestion, numTeams);
         });
       }
     });
@@ -178,8 +182,19 @@ exports.initGame = (io, socket) => {
         ctr++;
       }
     }
+
+    let max = 0;
+    let team = 0;
+
+    console.log(teamPoints);
     if (ctr === teamProgress.length) {
-      io.to(socket.room).emit("gameOver");
+      for (let i = 0; i < teamPoints.length; i++) {
+        if (teamPoints[i] > max) {
+          max = teamPoints[i];
+          team = i;
+        }
+      }
+      io.to(socket.room).emit("gameOver", team+1);
     }
   });
 };

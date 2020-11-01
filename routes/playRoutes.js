@@ -5,6 +5,7 @@ const { isLoggedIn, isStudent } = middleware;
 
 const Class = require("../models/class");
 const Game = require("../models/game");
+const GameLog = require("../models/gameLog");
 
 // makes logout button work
 const users = require("../controllers/users");
@@ -17,7 +18,14 @@ router.get("/", function(req, res) {
 		if (err) {
 			console.log(err);
 		} else {
-			res.render("play/home", {classes, user: req.user});
+      GameLog.find({student: req.user}, function(err, gamelog) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(gamelog)
+          res.render("play/home", {classes, user: req.user, gamelog});
+        }
+      });
 		}
 	})
 });

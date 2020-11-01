@@ -6,3 +6,7 @@ Home of play live
     <p>Class Title: <%= eachClass.title %></p>
     <a href="play/<%= eachClass.id %>">View Class</a>
 <% }); %>
+
+<% gamelog.forEach(function(log) { %>
+    <p>game: <%= log.game %></p>
+<% }); %>

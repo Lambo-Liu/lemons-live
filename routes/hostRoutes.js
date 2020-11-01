@@ -436,7 +436,7 @@ router.delete("/:id/:gameid", function(req, res) {
 });
 
 router.get("/:id/:gameid", function(req, res) {
-  Class.findOne({_id: req.params.id}, function(err, foundClassd) {
+  Class.findOne({_id: req.params.id}, function(err, foundClass) {
     if (err) {
       req.flash("error", "An error has occured! Please contact a site admin if you believe this was a mistake.");
       res.redirect("/dashboard");
@@ -447,7 +447,7 @@ router.get("/:id/:gameid", function(req, res) {
           res.redirect("/dashboard");
         } else {
           parseQuestions(game.questions, function(parsedQuestions) {
-            res.render("host/games/show", {user: req.user, game, questions: parsedQuestions});
+            res.render("host/games/show", {user: req.user, game, foundClass, questions: parsedQuestions});
           });
         }
       });

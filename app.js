@@ -13,7 +13,7 @@ const favicon = require("serve-favicon");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user");
 const MongoDBStore = require("connect-mongo")(session);
-const quiz = require("./game");
+const game = require("./server-game");
 
 const uri = "mongodb+srv://dbUser:5J2wYCCyTe5nhvSu@cluster.uuemj.mongodb.net/games?retryWrites=true&w=majority";
 
@@ -88,6 +88,7 @@ app.use("/modules/fontawesome", express.static(__dirname + "/node_modules/@forta
 app.use("/modules/alpinejs", express.static(__dirname + "/node_modules/alpinejs/dist/"));
 app.use("/modules/jquery", express.static(__dirname + "/node_modules/jquery/dist/"));
 app.use("/modules/animatecss", express.static(__dirname + "/node_modules/animate.css/"));
+app.use("/modules/animejs", express.static(__dirname + "/node_modules/animejs/lib"));
 
 const userRoutes = require("./routes/userRoutes");
 const hostRoutes = require("./routes/hostRoutes");
@@ -105,10 +106,8 @@ app.get("/", function(req, res) {
 });
 
 io.on("connection", (socket) => {
-	console.log("a user connected");
-	quiz.initGame(io, socket);
+	game.initGame(io, socket);
 });
-
 
 http.listen(port, hostname, function() {
 	console.log(`Server running at http://${hostname}:${port}/`);

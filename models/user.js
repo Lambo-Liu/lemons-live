@@ -31,26 +31,10 @@ const UserSchema = new Schema({
       ref: "Questions"
     }
   ],
-  gamesLog: [
-    {
-      games: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Game"
-      },
-      questions: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Questions"
-        }
-      ],
-      score: {
-        type: Number
-      },
-      team: {
-        type: Number
-      }
-    }
-  ],
+  gamesLog: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "GameLog"
+  }],
 });
 
 UserSchema.plugin(passportLocalMongoose);

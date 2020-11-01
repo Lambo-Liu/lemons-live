@@ -65,12 +65,14 @@
                   </div>
                 </div>
               </a>
-              <form class="ml-auto mr-4 flex items-center text-white" action="" method="">
-                <button type="submit" class="text-sm bg-green-700 hover:bg-green-600 border-b-2 rounded py-2 px-4 border-dark shadow">
-                  <i class="fa fa-play"></i>
-                </button>
-              </form
-              <form class="ml-auto mr-4 flex items-center text-white" action="/dashboard/<%= foundClass._id %>/<%= game._id %>?_method=DELETE" method="POST">
+              <div class="ml-auto mr-4 flex items-center text-white">
+                <a href="/dashboard/<%= foundClass._id %>/<%= game._id %>">
+                  <button type="submit" class="text-sm bg-green-700 hover:bg-green-600 border-b-2 rounded py-2 px-4 border-dark shadow">
+                    <i class="fa fa-play"></i>
+                  </button>
+                </a>
+              </div>
+              <form class="mr-4 flex items-center text-white" action="/dashboard/<%= foundClass._id %>/<%= game._id %>?_method=DELETE" method="POST">
                 <button type="submit" class="text-sm bg-red-700 hover:bg-red-600 border-b-2 rounded py-2 px-4 border-dark shadow">
                   <i class="fa fa-times"></i>
                 </button>

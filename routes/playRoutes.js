@@ -4,6 +4,7 @@ const middleware = require("../middleware");
 const { isLoggedIn, isStudent } = middleware;
 
 const Class = require("../models/class");
+const Game = require("../models/game");
 
 // makes logout button work
 const users = require("../controllers/users");
@@ -33,7 +34,21 @@ router.get("/:id", function(req, res) {
 });
 
 router.get("/:id/:gameid", function(req, res) {
-  res.render("play/games/show", {user: req.user});
+	Class.findOne({_id: req.params.id}, function(err, foundClass) {
+    if (err) {
+      req.flash("error", "An error has occured! Please contact a site admin if you believe this was a mistake.");
+      res.redirect("/dashboard");
+    } else {
+      Game.findOne({_id: req.params.gameid}, function(err, game) {
+        if (err) {
+          req.flash("error", "An error has occured! Please contact a site admin if you believe this was a mistake.");
+          res.redirect("/dashboard");
+        } else {
+          res.render("play/games/show", {user: req.user, foundClass, gameID: game._id});
+        }
+      });
+    }
+  });
 });
 
 module.exports = router;

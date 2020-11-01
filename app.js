@@ -57,9 +57,7 @@ const sessionConfig = {
 };
 app.use(session(sessionConfig));
 
-// Host and port
-const hostname = "127.0.0.1";
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.engine("ejs", engine);
 app.use(express.urlencoded({ extended: true }));
@@ -109,6 +107,6 @@ io.on("connection", (socket) => {
 	game.initGame(io, socket);
 });
 
-http.listen(port, hostname, function() {
-	console.log(`Server running at http://${hostname}:${port}/`);
+http.listen(port, function() {
+	console.log(`Server running at port ${port}/`);
 });

@@ -1,3 +1,75 @@
-<div>
-    <p>Class Title: <%= foundClass.title %></p>
+<% layout('./boilerplate') -%>
+
+<div class="w-full flex justify-center py-4 lg:px-16 sm:px-4">
+  <div class="flex flex-col justify-center lg:px-12 sm:px-8 px-6 bg-light-dark rounded-md w-full h-32 shadow">
+    <p class="text-xs text-dark-light mb-2">
+      <span> <a href="/play">Play</a> /</span>
+      <span> <a href="/play/<%= foundClass._id %>"><%= foundClass.title %></a></span>
+    </p>
+    <div class="flex items-center">
+      <p class="text-4xl"><%= foundClass.title %></p>
+    </div>
+  </div>
+</div>
+
+<div class="w-full flex xl:flex-row flex-col justify-center mb-4 py-4 lg:px-16 sm:px-4">
+  <div class="xl:w-7/12 xl:pr-4 xl:mb-0 w-12/12 mb-8">
+    <div class="flex flex-col bg-light rounded-md w-full lg:pb-6 pb-4 lg:p-16 p-8 shadow" style="height: 690px;">
+      <p class="lg:text-xl text-lg font-bold">Class Games</p>
+      <hr class="text-light-dark my-6">
+      <div class="flex flex-col flex-grow h-full items-start">
+        <% games.forEach(function(game) { %>
+          <div class="flex flex-row w-full items-center px-2 py-2 mb-4 bg-dark-light text-white rounded-md shadow">
+            <div class="w-full text-left flex flex-row items-center px-4 py-2">
+              <img class="h-16 mr-4" src="/img/logo.png" alt="Lemons Live logo">
+              <a href="/play/<%= foundClass._id %>/<%= game._id %>">
+                <div class="flex flex-col justify-center">
+                  <p class="font-semibold line-cut-1 mb-1 m-0"><%= game.title %></p>
+                  <div class="w-full flex flex-row items-center">
+                    <%= game.teams %> teams
+                  </div>
+                </div>
+              </a>
+              <div class="ml-auto mr-4 flex items-center text-white">
+                <a href="/play/<%= foundClass._id %>/<%= game._id %>">
+                  <button type="submit" class="text-sm bg-green-700 hover:bg-green-600 border-b-2 rounded py-2 px-4 border-dark shadow">
+                    <i class="fa fa-play"></i>
+                  </button>
+                </a>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+
+  <div class="xl:w-5/12 xl:pl-4 w-12/12">
+    <div class="flex flex-col bg-light rounded-md w-full lg:pb-6 pb-4 lg:p-16 p-8 shadow" style="height: 690px;">
+      <p class="lg:text-xl text-lg font-bold">Class Members</p>
+      <hr class="text-light-dark my-6">
+      <div class="flex flex-col flex-grow h-full">
+        <div class="flex flex-col overflow-y-scroll" style="max-height: 400px;">
+          <div class="flex flex-row align-center text-theme6 px-2 py-2 mb-8 text-sm bg-light-dark rounded-md shadow">
+            <img class="h-16 rounded-full mx-1" src="/img/profile.jpeg" alt="User profile picture">
+            <div class="w-full ml-4 text-left flex flex-col justify-center">
+              <p class="text-xs">Teacher</p>
+              <p class="text-sm font-semibold line-cut-1 m-0"><%= teacher.username %></p>
+            </div>
+          </div>
+          <% studentsInClass.forEach(function(student) { %>
+            <div class="flex flex-row items-center text-theme5 px-2 py-2 mb-3 text-sm bg-light-dark rounded-md shadow">
+              <img class="h-16 rounded-full mx-1" src="/img/profile.jpeg" alt="User profile picture">
+              <div class="w-full ml-4 text-left flex flex-row items-center">
+                <div class="flex flex-col justify-center">
+                  <p class="text-xs">Student</p>
+                  <p class="text-sm font-semibold line-cut-1 m-0"><%= student.username %></p>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

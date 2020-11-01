@@ -104,7 +104,7 @@ function deleteQuestions(questions, callback) {
 }
 
 router.get("/", function(req, res) {
-  Class.find({}, function(err, classes) {
+  Class.find({teacher: req.user}, function(err, classes) {
     if (err) {
       req.flash("error", "An error has occured! Please contact a site admin if you believe this was a mistake.");
       res.redirect("/dashboard");

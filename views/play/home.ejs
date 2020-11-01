@@ -1,12 +1,57 @@
 <% layout('./boilerplate') -%>
 
-Home of play live
+<div class="w-full flex flex-col items-center py-4 lg:px-16 sm:px-4">
+  <div class="bg-light shadow rounded-md w-full lg:pb-6 pb-4 lg:p-16 p-8" style="min-height: 690px;">
+    <p class="lg:text-2xl text-xl font-bold">Student Home</p>
+    <hr class="text-light-dark my-6">
+    <div class="flex flex-row mb-8">
+      <p class="text-lg my-1"> My Classes </p>
+    </div>
 
-<% classes.forEach(function(eachClass) { %>
-    <p>Class Title: <%= eachClass.title %></p>
-    <a href="play/<%= eachClass.id %>">View Class</a>
-<% }); %>
+    <div class="flex sm:flex-row flex-col flex-wrap" style="margin-left: -1rem; margin-right: -1rem;">
+      <% classes.forEach(function(eachClass) { %>
+        <div class="flex justify-center xl:w-4/12 sm:w-6/12 w-full px-4 mb-8">
+          <a href="/play/<%= eachClass._id %>">
+            <div class="max-w-sm rounded overflow-hidden shadow-lg bg-white">
+              <img class="w-full h-56 object-cover" src="/img/card-top-1.jpg" alt="Math stock image from Unsplash">
+              <div class="px-6 py-4">
+                <div class="font-bold text-lg mb-2"><%= eachClass.title %></div>
+                <p class="text-gray-700 text-sm">
+                  <span class="line-cut-2">This is a dummy text for the class description, which will be written by the class teacher.</span> <br/>
+                  <span class="font-semibold">Students: </span> <%= eachClass.students.length %> <br/>
+                  <span class="font-semibold">Games: </span> <%= eachClass.games.length %> <br/>
+                </p>
+              </div>
+            </div>
+          </a>
+        </div>
+      <% }); %>
+    </div>
+  </div>
 
-<% gamelog.forEach(function(log) { %>
-    <p>game: <%= log.game %></p>
-<% }); %>
+  <div class="bg-light shadow rounded-md w-full lg:pb-6 pb-4 lg:p-16 p-8 mt-16" style="min-height: 690px;">
+    <div class="flex flex-row mb-8">
+      <p class="text-lg my-1"> Recently Completed Games </p>
+    </div>
+
+    <div class="flex flex-row flex-wrap">
+      <% gamesLog.forEach(function(gameLog) { %>
+        <div class="flex justify-center sm:w-6/12 sm:px-4 w-full h-20 mb-4">
+          <a class="w-full h-full" href="/play/analyze/<%= gameLog.gameLog._id %>">
+            <div class="flex flex-row items-center w-full h-full rounded shadow-lg bg-white">
+              <i class="fa fa-3x fa-tasks mx-4"></i>
+              <div class="flex flex-col ml-4">
+                <p><%= gameLog.gameName %></p>
+                <p class="text-xs"><%= gameLog.className %></p>
+              </div>
+              <div class="flex flex-col ml-auto mr-8">
+                <p class="text-xs text-theme6">My score: <%= gameLog.gameLog.score %></p>
+                <p class="text-xs">Teams: <%= gameLog.gameLog.team %></p>
+              </div>
+            </div>
+          </a>
+        </div>
+      <% }); %>
+    </div>
+  </div>
+</div>

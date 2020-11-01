@@ -20,7 +20,7 @@
       <% classes.forEach(function(eachClass) { %>
         <div class="flex justify-center xl:w-4/12 sm:w-6/12 w-full px-4 mb-8">
           <a href="/dashboard/<%= eachClass._id %>">
-            <div class="max-w-sm rounded overflow-hidden shadow-lg">
+            <div class="max-w-sm rounded overflow-hidden shadow-lg bg-white">
               <img class="w-full h-56 object-cover" src="/img/card-top-1.jpg" alt="Math stock image from Unsplash">
               <div class="px-6 py-4">
                 <div class="font-bold text-lg mb-2"><%= eachClass.title %></div>
@@ -35,9 +35,5 @@
         </div>
       <% }); %>
     </div>
-
-    <!-- <form action="/dashboard/classID?_method=DELETE" method="POST">
-        <button type="submit">Delete</button>
-    </form> -->
   </div>
 </div>

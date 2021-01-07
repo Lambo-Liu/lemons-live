@@ -15,7 +15,11 @@ const User = require("./models/user");
 const MongoDBStore = require("connect-mongo")(session);
 const game = require("./server-game");
 
-const uri = "mongodb+srv://dbUser:5J2wYCCyTe5nhvSu@cluster.uuemj.mongodb.net/games?retryWrites=true&w=majority";
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+
+const uri = process.env.URI;
 
 mongoose.connect(uri, {
 	useNewUrlParser: true,
@@ -30,7 +34,7 @@ db.once("open", () => {
 	console.log("Database connected");
 });
 
-const secret = process.env.SECRET || "12jk32hk?kshd&k$k%23h43kjfhsxhoia!";
+const secret = process.env.SECRET;
 
 const store = new MongoDBStore({
 	url: uri,
